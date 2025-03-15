@@ -8,6 +8,7 @@ import {
   loginSuccess,
   loginFailed,
 } from "../redux/user/user.jsx";
+import OAuth from "../components/OAuth.jsx";
 function Login() {
   const [formData, setFormData] = React.useState({
     email: "",
@@ -69,6 +70,7 @@ function Login() {
           {loading ? "Signing up..." : "Sign up"}{" "}
           {/* Hiển thị trạng thái loading */}
         </button>
+        <OAuth/>
       </form>
 
       {/* Hiển thị lỗi nếu có */}

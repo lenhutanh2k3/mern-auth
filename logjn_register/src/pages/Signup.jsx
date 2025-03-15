@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import  { useNavigate } from "react-router-dom";
+import OAuth from "../components/OAuth";
 function Signup() {
   const [formData, setFormData] = React.useState({
     username: "",
@@ -78,6 +79,7 @@ function Signup() {
           {loading ? "Signing up..." : "Sign up"}{" "}
           {/* Hiển thị trạng thái loading */}
         </button>
+        <OAuth/>
       </form>
       {error && <p className="text-red-500">{error}</p>}{" "}
       {/* Hiển thị lỗi nếu có */}

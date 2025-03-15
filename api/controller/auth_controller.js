@@ -41,6 +41,38 @@ const AuthController = {
             console.error("Login error:", error); // Hiển thị lỗi chi tiết trong console
             next(errorHandler(500, "Error login"));
         }
+    },
+    google:async(req,res,next)=>{
+        try {
+            const {email,name,photo}=req.body;
+            const user =await User.findOne({email:email});
+            if (!user)
+            {
+                const generatePassword =
+                  Math.random().toString(36).slice(-8) +
+                  Math.random().toString(36).slice(-8);
+                const hashPassword = await bcrypt.hash(generatePassword, 10);
+                const newUser = new User({
+                  username:
+                    name.split(" ").join("").toLowerCase() +
+                    Math.random().toString(36).slice(-4),
+                  email,
+                  password: hashPassword,
+                  avatar: photo,
+                });
+                await newUser.save();
+                const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+                const { password: pass, ...rest } = newUser._doc;
+                res.cookie('access_token', token, { httpOnly: true }).json({ message: "Login successfully", ...rest }); 
+
+            }
+            const token =jwt.sign({id:user._id},process.env.JWT_SECRET,{expiresIn:"1h"});
+            const {password,...rest}=user._doc;
+            res.cookie("access_token", token, { httpOnly: true }).status(200).json({ message: "Login successfully", ...rest });
+
+        } catch (error) {
+            next(errorHandler(500, "Error login google"));
+        }
     }
 
 }
