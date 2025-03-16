@@ -26,7 +26,27 @@ const userSlice = createSlice({
       state.error = null;
       state.loading = false;
     },
+    updateUserStart: (state) => {
+      state.loading = true;
+    },
+    updateUserSuccess: (state, action) => {
+      state.loading = false;
+      state.userCurrent = action.payload; // Lưu ý: action.payload có thể chứa trường 'others' nếu bạn đang loại bỏ password trong response
+      state.error = null;
+    },
+    updateUserFailed: (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    },
   },
 });
-export const {loginStart, loginSuccess, loginFailed, logout} = userSlice.actions;
+export const {
+  loginStart,
+  loginSuccess,
+  loginFailed,
+  logout,
+  updateUserStart,
+  updateUserSuccess,
+  updateUserFailed,
+} = userSlice.actions;
 export default userSlice.reducer;
